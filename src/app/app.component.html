@@ -1,0 +1,64 @@
+<div class="content">
+  <mat-card class="configuration-card">
+    <mat-card-title>Konfiguracja</mat-card-title>
+    <form [formGroup]="configurationForm" class="configuration-card__form">
+      <mat-form-field>
+        <mat-label>Wysokość</mat-label>
+        <input matInput formControlName="x" type="number"/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Szerokość</mat-label>
+        <input matInput formControlName="y" type="number"/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Make alive</mat-label>
+        <input matInput [formControl]="makeAlive"/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Keep alive</mat-label>
+        <input matInput [formControl]="keepAlive"/>
+      </mat-form-field>
+    </form>
+    <button
+      mat-flat-button
+      color="primary"
+      class="configuration-card__submit-button"
+      (click)="generate()" [disabled]="configurationForm.invalid">
+      Generuj
+    </button>
+    <button
+      mat-flat-button
+      color="primary"
+      class="configuration-card__submit-button"
+      [disabled]="!matrix.length"
+      (click)="step()">
+      Wykonaj ruch
+    </button>
+    <button
+      mat-flat-button
+      [color]="start ? 'accent' : 'primary'"
+      class="configuration-card__submit-button"
+      [disabled]="!matrix.length"
+      (click)="start = !start">
+      {{ start ? 'Zatrzymaj' : 'Wystartuj'}}
+    </button>
+    <span>Wykonanych kroków: {{ steps }}</span>
+  </mat-card>
+
+  <mat-card *ngIf="matrix.length">
+    <mat-card-title>Plansza</mat-card-title>
+    <div class="map">
+      <div class="row" *ngFor="let row of matrix; let i = index">
+        <span
+          class="cell"
+          *ngFor="let cell of row; let j = index"
+          (click)="matrix[i][j] = +!matrix[i][j]"
+          [ngClass]="{'alive': cell == 1, 'dead': cell == 0}">
+        </span>
+      </div>
+    </div>
+  </mat-card>
+</div>
+
+
+
